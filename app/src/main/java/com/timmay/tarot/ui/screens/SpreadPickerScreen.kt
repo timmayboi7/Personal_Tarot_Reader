@@ -16,12 +16,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.timmay.tarot.viewmodel.SpreadPickerViewModel
 
 @Composable
-fun SpreadPickerScreen(nav: NavController, vm: SpreadPickerViewModel = viewModel()) {
+fun SpreadPickerScreen(nav: NavController, vm: SpreadPickerViewModel = hiltViewModel()) {
     val spreads by vm.spreads.collectAsState()
 
     LaunchedEffect(Unit) {
