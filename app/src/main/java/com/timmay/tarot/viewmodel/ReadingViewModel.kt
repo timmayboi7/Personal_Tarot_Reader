@@ -2,32 +2,22 @@ package com.timmay.tarot.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.timmay.tarot.domain.Interpreter
-import com.timmay.tarot.domain.ReadingCard
-import com.timmay.tarot.domain.Spread
-import com.timmay.tarot.domain.TarotRng
-import com.timmay.tarot.repo.CardStore
-import com.timmay.tarot.repo.SpreadRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import com.timmay.tarot.repo.SpreadRepository
+import com.timmay.tarot.repo.DeckRepository
+import com.timmay.tarot.repo.CardStore
+import com.timmay.tarot.domain.*
 
-@HiltViewModel
-class ReadingViewModel @Inject constructor(
-    private val spreadRepository: SpreadRepository,
-    private val cardStore: CardStore,
-    private val interpreter: Interpreter
-) : ViewModel() {
-
+class ReadingViewModel: ViewModel() {
     sealed class Ui {
-        data object Loading : Ui()
+        data object Loading: Ui()
         data class Result(
             val spread: Spread,
-            val cards: List<ReadingCard>,
+            val cards: List<CardWithCard>,
             val prose: String
-        ) : Ui()
+        ): Ui()
     }
 
     private val _ui = MutableStateFlow<Ui>(Ui.Loading)
@@ -35,14 +25,18 @@ class ReadingViewModel @Inject constructor(
 
     fun start(spreadId: String) {
         viewModelScope.launch {
-            val spread = spreadRepository.byId(spreadId)
+            val spreads = SpreadRepository()
+            val spread = spreads.byId(spreadId)
+            val deckRepo = DeckRepository(CardStore())
             val seed = TarotRng.secureSeed()
-            val shuffled = cardStore.all().shuffled(kotlin.random.Random(seed))
+            val shuffled = deckRepo.shuffled(seed)
 
-            val dealt = shuffled.take(spread.positions.size).map {
-                ReadingCard(it, kotlin.random.Random(seed).nextBoolean())
+            val allCards = CardStore().all().associateBy { it.id }
+            val dealt = shuffled.take(spread.positions.size).map { d ->
+                val card = allCards[d.cardId] ?: error("Card not found: " + d.cardId)
+                CardWithCard(card, d.isReversed)
             }
-            val prose = interpreter.compose(spread, dealt)
+            val prose = Interpreter().compose(spread, dealt)
             _ui.value = Ui.Result(spread, dealt, prose)
         }
     }

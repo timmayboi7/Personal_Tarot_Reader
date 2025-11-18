@@ -1,15 +1,13 @@
 package com.timmay.tarot.domain
 
-import javax.inject.Inject
-
-class Interpreter @Inject constructor() {
-    fun compose(spread: Spread, cards: List<ReadingCard>): String {
+class Interpreter {
+    fun compose(spread: Spread, cards: List<CardWithCard>): String {
         val majors = cards.count { it.card.arcana == Arcana.MAJOR }
         val suits = cards.mapNotNull { it.card.suit }
         val dominantSuit = suits.groupingBy { it }.eachCount().maxByOrNull { it.value }?.key
         val theme = buildString {
             if (majors >= 3) append("Major turning points are at play. ")
-            if (dominantSuit != null) append("Energy leans toward $dominantSuit. ")
+            if (dominantSuit != null) append("Energy leans toward " + dominantSuit + ". ")
         }
         val lines = cards.mapIndexed { i, c ->
             val pos = spread.positions[i].label
@@ -19,3 +17,6 @@ class Interpreter @Inject constructor() {
         return (theme + lines.joinToString("\n")).trim()
     }
 }
+
+data class CardWithCard(val card: TarotCard, val isReversed: Boolean)
+

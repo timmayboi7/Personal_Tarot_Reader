@@ -1,7 +1,6 @@
 package com.timmay.tarot.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -16,8 +15,9 @@ fun TarotAppRoot() {
         composable("home") { HomeScreen(nav) }
         composable("spread_picker") { SpreadPickerScreen(nav) }
         composable("reading/{spreadId}") { back ->
-            val spreadId = remember { back.arguments?.getString("spreadId") ?: throw IllegalStateException("spreadId not found") }
+            val spreadId = back.arguments?.getString("spreadId") ?: "three_card"
             ReadingScreen(spreadId)
         }
     }
 }
+

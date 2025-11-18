@@ -1,37 +1,36 @@
 package com.timmay.tarot.ui.screens
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.timmay.tarot.viewmodel.HomeViewModel
+import java.time.ZoneId
+import com.timmay.tarot.domain.TarotRng
+import com.timmay.tarot.repo.CardStore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Composable
-fun HomeScreen(nav: NavController, vm: HomeViewModel = hiltViewModel()) {
-    val dailyCard by vm.dailyCard.collectAsState()
-
+fun HomeScreen(nav: NavController) {
+    val zone = remember { ZoneId.systemDefault() }
+    val dailySeed = remember { TarotRng.dailySeed(zone) }
+    var daily by remember { mutableStateOf("…") }
     LaunchedEffect(Unit) {
-        vm.fetchDailyCard()
+        withContext(Dispatchers.IO) {
+            val cards = CardStore().all()
+            val idx = kotlin.random.Random(dailySeed).nextInt(cards.size)
+            daily = cards[idx].name
+        }
     }
 
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text("Daily Card", style = MaterialTheme.typography.headlineMedium)
             Spacer(Modifier.height(6.dp))
-            Text(dailyCard, style = MaterialTheme.typography.titleLarge)
+            Text(daily, style = MaterialTheme.typography.titleLarge)
             Spacer(Modifier.height(24.dp))
             Button(onClick = { nav.navigate("spread_picker") }) { Text("Start a reading") }
         }
