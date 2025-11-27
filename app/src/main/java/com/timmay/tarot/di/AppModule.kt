@@ -1,11 +1,9 @@
 package com.timmay.tarot.di
 
-import android.content.Context
 import com.timmay.tarot.repo.CardStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -14,5 +12,5 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun provideCardStore(@ApplicationContext context: Context): CardStore = CardStore.getInstance(context)
+    fun provideCardStore(): CardStore = CardStore()
 }

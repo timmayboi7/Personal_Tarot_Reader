@@ -2,7 +2,9 @@ package com.timmay.tarot.domain
 
 import kotlinx.serialization.Serializable
 
+@Serializable
 enum class Arcana { MAJOR, MINOR }
+@Serializable
 enum class Suit { WANDS, CUPS, SWORDS, PENTACLES }
 
 @Serializable
