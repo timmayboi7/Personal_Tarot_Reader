@@ -1,47 +1,66 @@
 package com.timmay.tarot.viewmodel
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.timmay.tarot.domain.CardWithState
 import com.timmay.tarot.domain.Interpreter
-import com.timmay.tarot.domain.ReadingCard
 import com.timmay.tarot.domain.Spread
 import com.timmay.tarot.domain.TarotRng
-import com.timmay.tarot.repo.DeckRepository
-import com.timmay.tarot.repo.SpreadRepository
+import com.timmay.tarot.repo.CardStore
+import com.timmay.tarot.repo.SpreadStore
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.time.ZoneId
 import javax.inject.Inject
 
 @HiltViewModel
 class ReadingViewModel @Inject constructor(
-    private val spreadRepository: SpreadRepository,
-    private val deckRepository: DeckRepository,
-    private val interpreter: Interpreter
+    private val cardStore: CardStore,
+    private val spreadStore: SpreadStore,
+    private val interpreter: Interpreter,
 ) : ViewModel() {
 
-class ReadingViewModel: ViewModel() {
     sealed class Ui {
-        data object Loading: Ui()
+        data object Loading : Ui()
         data class Result(
             val spread: Spread,
-            val cards: List<CardWithCard>,
-            val prose: String
-        ): Ui()
+            val cards: List<CardWithState>,
+            val prose: String,
+            val revealed: List<Boolean>,
+        ) : Ui()
     }
 
     private val _ui = MutableStateFlow<Ui>(Ui.Loading)
-    val ui: StateFlow<Ui> = _ui
+    val ui = _ui.asStateFlow()
 
     fun start(spreadId: String) {
         viewModelScope.launch {
             _ui.value = Ui.Loading
-            val spread = spreadRepository.byId(spreadId)
-            val seed = TarotRng.secureSeed()
-            val dealt = deckRepository.draw(spread.positions.size, seed)
-            val prose = interpreter.compose(spread, dealt)
-            _ui.value = Ui.Result(spread, dealt, prose)
+            withContext(Dispatchers.IO) {
+                val spread = spreadStore.all().first { it.id == spreadId }
+                val seed = TarotRng.dailySeed(ZoneId.systemDefault())
+                val random = TarotRng.random(seed)
+                val deck = cardStore.all().shuffled(random)
+                val cards = deck.take(spread.positions.size).map {
+                    CardWithState(it, random.nextBoolean())
+                }
+                val prose = interpreter.compose(spread, cards)
+                _ui.value = Ui.Result(spread, cards, prose, MutableList(cards.size) { false })
+            }
+        }
+    }
+
+    fun reveal(index: Int) {
+        val current = _ui.value
+        if (current is Ui.Result) {
+            val revealed = current.revealed.toMutableList()
+            revealed[index] = true
+            _ui.value = current.copy(revealed = revealed)
         }
     }
 }

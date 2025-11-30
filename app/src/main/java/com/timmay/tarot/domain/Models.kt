@@ -28,11 +28,3 @@ data class Spread(
     val name: String,
     val positions: List<Position>
 )
-
-@Serializable
-data class DrawnCard(
-    val cardId: String,
-    val isReversed: Boolean,
-    val positionIndex: Int
-)
-
