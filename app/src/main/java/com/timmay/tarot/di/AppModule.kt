@@ -1,10 +1,9 @@
 package com.timmay.tarot.di
 
-import android.content.Context
+import com.timmay.tarot.repo.CardStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import java.io.InputStream
 import javax.inject.Named
@@ -20,8 +19,6 @@ object AppModule {
     }
 
     @Provides
-    @Named("spreadStream")
-    fun provideSpreadStream(@ApplicationContext context: Context): InputStream {
-        return context.assets.open("spreads.json")
-    }
+    @Singleton
+    fun provideCardStore(): CardStore = CardStore()
 }
