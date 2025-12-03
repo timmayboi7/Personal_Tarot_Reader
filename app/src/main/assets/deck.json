@@ -1,0 +1,114 @@
+[
+  {
+    "id": "fool",
+    "name": "The Fool",
+    "arcana": "MAJOR",
+    "keywordsUpright": ["beginnings", "innocence", "free spirit"],
+    "keywordsReversed": ["hesitation", "recklessness", "doubt"],
+    "meaningUpright": "A leap of faith, optimism, and openness to the unknown.",
+    "meaningReversed": "Pause before jumping; gather information and ground yourself."
+  },
+  {
+    "id": "magician",
+    "name": "The Magician",
+    "arcana": "MAJOR",
+    "keywordsUpright": ["willpower", "manifestation", "skill"],
+    "keywordsReversed": ["misaligned goals", "scattered energy", "tricks"],
+    "meaningUpright": "Resources are in your hands—focus and make it real.",
+    "meaningReversed": "Check motives and clear distractions before proceeding."
+  },
+  {
+    "id": "priestess",
+    "name": "The High Priestess",
+    "arcana": "MAJOR",
+    "keywordsUpright": ["intuition", "mystery", "inner voice"],
+    "keywordsReversed": ["secrets", "blocked intuition", "withholding"],
+    "meaningUpright": "Listen to your inner knowing; the answer is within.",
+    "meaningReversed": "Something is hidden—pause and allow truths to surface."
+  },
+  {
+    "id": "empress",
+    "name": "The Empress",
+    "arcana": "MAJOR",
+    "keywordsUpright": ["nurture", "abundance", "creativity"],
+    "keywordsReversed": ["creative block", "overgiving", "stagnation"],
+    "meaningUpright": "Growth and comfort bloom when you care for yourself and others.",
+    "meaningReversed": "Replenish yourself; create from fullness, not depletion."
+  },
+  {
+    "id": "emperor",
+    "name": "The Emperor",
+    "arcana": "MAJOR",
+    "keywordsUpright": ["structure", "authority", "order"],
+    "keywordsReversed": ["rigidity", "control", "imbalance"],
+    "meaningUpright": "Lead with clarity and boundaries; build a lasting foundation.",
+    "meaningReversed": "Flexibility is needed—release the grip to regain balance."
+  },
+  {
+    "id": "hierophant",
+    "name": "The Hierophant",
+    "arcana": "MAJOR",
+    "keywordsUpright": ["tradition", "learning", "ritual"],
+    "keywordsReversed": ["dogma", "rebellion", "questioning"],
+    "meaningUpright": "Seek wisdom in trusted teachings and community.",
+    "meaningReversed": "Question stale rules; craft a path aligned with your values."
+  },
+  {
+    "id": "lovers",
+    "name": "The Lovers",
+    "arcana": "MAJOR",
+    "keywordsUpright": ["union", "alignment", "choice"],
+    "keywordsReversed": ["imbalance", "disharmony", "avoidance"],
+    "meaningUpright": "A heartfelt choice or partnership asks for honest alignment.",
+    "meaningReversed": "Reconnect to your values before making commitments."
+  },
+  {
+    "id": "chariot",
+    "name": "The Chariot",
+    "arcana": "MAJOR",
+    "keywordsUpright": ["drive", "victory", "direction"],
+    "keywordsReversed": ["drift", "force", "misalignment"],
+    "meaningUpright": "Momentum builds when will and purpose move together.",
+    "meaningReversed": "Realign your course; forcing it only skids the wheels."
+  },
+  {
+    "id": "sun",
+    "name": "The Sun",
+    "arcana": "MAJOR",
+    "keywordsUpright": ["joy", "clarity", "success"],
+    "keywordsReversed": ["doubt", "temporary clouds", "overexposure"],
+    "meaningUpright": "Warmth, visibility, and confidence shine on your path.",
+    "meaningReversed": "Step into the light gently; celebrate progress even if muted."
+  },
+  {
+    "id": "moon",
+    "name": "The Moon",
+    "arcana": "MAJOR",
+    "keywordsUpright": ["dreams", "intuition", "cycles"],
+    "keywordsReversed": ["confusion", "fear", "hidden truths"],
+    "meaningUpright": "Move with the tide of intuition; not everything is linear.",
+    "meaningReversed": "Name the fear; clarity grows when you investigate the shadows."
+  },
+  {
+    "id": "ace_cups",
+    "name": "Ace of Cups",
+    "arcana": "MINOR",
+    "suit": "CUPS",
+    "number": 1,
+    "keywordsUpright": ["overflow", "love", "new feelings"],
+    "keywordsReversed": ["emotional block", "reserved", "self-focus"],
+    "meaningUpright": "A fresh wellspring of emotion and connection opens up.",
+    "meaningReversed": "Tend to your own cup before pouring out to others."
+  },
+  {
+    "id": "three_wands",
+    "name": "Three of Wands",
+    "arcana": "MINOR",
+    "suit": "WANDS",
+    "number": 3,
+    "keywordsUpright": ["expansion", "planning", "momentum"],
+    "keywordsReversed": ["delays", "playing small", "hesitation"],
+    "meaningUpright": "You can see the horizon—take the next bold step.",
+    "meaningReversed": "Break the stall by adjusting plans and trusting your vision."
+  }
+]
